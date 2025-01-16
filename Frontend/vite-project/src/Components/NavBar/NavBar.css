@@ -1,0 +1,131 @@
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: var(--c-dark);
+}
+.navbar-nav .nav-link.active {
+  color: var(--c-brand);
+}
+.navbar {
+  box-shadow: var(--box-shadow);
+  /* get from bootstrap */
+}
+.navbar-brand {
+  text-transform: uppercase;
+}
+.btn-brand:hover {
+  background-color: white;
+  color: red;
+}
+.btn {
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  border-radius: 10px;
+  padding: 10px;
+
+}
+.btn-brand {
+  background-color: red;
+  color: white;
+
+}
+/* a.active hr{
+
+  display: none;
+} */
+ .user-icon{
+  /* width: 80px; */
+  /* height: 50px; */
+ }
+#hero {
+  background: linear-gradient(#00000021, #00000047),
+    url("../../public/Images/andras-vas-wB9WormrY1o-unsplash.jpg");
+  background-position: center;
+  background-size: cover;
+}
+img {
+  width: 100%;
+}
+.line {
+  background-color: var(--bs-indigo);
+  width: 70px;
+  height: 5px;
+  border-radius: 20px;
+  margin: 10px auto 24px auto;
+}
+.icon-box {
+  width: 70px;
+  height: 70px;
+  background-color: var(--bs-indigo);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+}
+.service {
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+  background-color: gray;
+}
+.service::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background: var(--bs-indigo);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.service:hover::after{
+    width: 100%;
+    height: 100%;
+    background: var(--bs-indigo);
+    z-index: -1;
+}
+.service:hover h5, .service p{
+    color: white;
+}
+.portfolio{
+    background: linear-gradient(rgba(var(--bs-indigo),0.8), rgba(var(--c-brand),0.4)), url('../../public/Images/3D students making ok sign Illustration.png');
+    background-size: cover;
+    background-position: center;
+}
+/* IMAGE ZOOM */
+.image-zoom{
+    position:relative;
+    overflow: hidden;
+}
+.image-zoom-wrapper{
+    overflow: hidden;
+    position: relative;
+}
+/* .image-zoom-wrapper img{
+    transition: var(--transition );
+} */
+.image-zoom:hover .image-zoom-wrapper img{
+    transform: scale(1.1);
+}
+.portfolio-item .zoom{
+    background-color: white;
+position: absolute;
+width: 50px;
+top: 40%;
+left: 50%;
+transform: translate(-50% -50%);
+opacity: 0;
+}
+.portfolio-item:hover .zoom{
+    opacity: 1;
+    top: 50%;
+}
+.team-member-content{
+    background-color: var(--bs-indigo);
+    position: relative;
+    bottom: 120px;
+    left: 50%;
+    width: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    color: white;
+}

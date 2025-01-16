@@ -1,0 +1,8 @@
+img{
+    width:100%
+}
+.active{
+    background-color: white;
+   border-color: red;
+   color: red;
+}
