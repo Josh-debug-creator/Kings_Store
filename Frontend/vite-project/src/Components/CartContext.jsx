@@ -15,24 +15,24 @@ useEffect(() => {
 
 
 const addToCart = (product) => {
-  return console.log("Product being added:", product);
-  // setCart((prevCart) => {
-  //  const existingProduct = prevCart.find((item) => {
-//   console.log(`Comparing: ${item?._id || "undefined"} with ${product?._id || "undefined"}`);
-//   return item?._id === product?._id;
-// });
+  // return console.log("Product being added:", product);
+  setCart((prevCart) => {
+   const existingProduct = prevCart.find((item) => {
+  console.log(`Comparing: ${item?.id || "undefined"} with ${product?.id || "undefined"}`);
+  return item?.id === product?.id;
+});
 
 
-  //   if (existingProduct) {
-  //     return prevCart.map((item) =>
-  //       item._id === product._id
-  //         ? { ...item, quantity: item.quantity + 1 }
-  //         : item
-  //     );
-  //   } else {
-  //     return [...prevCart, { ...product, quantity: 1 }];
-  //   }
-  // });
+    if (existingProduct) {
+      return prevCart.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    } else {
+      return [...prevCart, { ...product, quantity: 1 }];
+    }
+  });
 };
 
 
@@ -43,7 +43,7 @@ const removeFromCart = (id) => {
   setCart((prevCart) =>
     prevCart
       .map((item) =>
-        item._id === id ? { ...item, quantity: item.quantity - 1 } : item
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
       )
       .filter((item) => item.quantity > 0)
   );
@@ -53,7 +53,7 @@ const removeFromCart = (id) => {
 // delete item
 // map through the array and if the id is the same, check if the quantity is greater than 0
   const deleteFromCart = (id) => {
-    setCart((prevCart) => prevCart.filter((item) => item._id !== id));
+    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
 

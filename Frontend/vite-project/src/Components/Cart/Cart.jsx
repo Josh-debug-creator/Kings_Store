@@ -33,7 +33,7 @@ const handleProductQuantity = ()=>{
               console.log(cart);
               return (
                 <div
-                  className="row  cart-item d-flex align-items-center justify-content-between"
+                  className="row  cart-item d-flex align-items-center justify-content-between mb-3"
                   key={product.id}
                 >
                   {/* product details */}

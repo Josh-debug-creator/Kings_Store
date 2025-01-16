@@ -7,7 +7,7 @@ function ProductComponent({
   name,
   category,
   price,
-  _id,
+  id,
   quantity = 0, // Default to 0 if quantity is not provided
 }) {
   const { addToCart, removeFromCart, cart } = useContext(CartContext);
@@ -28,7 +28,7 @@ function ProductComponent({
           <div className="quality-controller">
             <button
               className="plus-cart btn btn-secondary"
-               onClick={() => addToCart({ name, image, price, _id: id, quantity: 1 })}
+               onClick={() => addToCart({ name, image, price, id, quantity: 1 })}
             >
               +
             </button>
