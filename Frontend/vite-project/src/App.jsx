@@ -8,6 +8,7 @@ import LoginPage from "./Pages/Login";
 import Order from './Components/Order'
 import SignUpPage from "./Pages/SignUp";
 import PaystackPayment from "./Components/Payment";
+import ResetPasswordPage from './Components/ResetPassword'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/order" element={<Order />} />
           <Route path="/payment" element={<PaystackPayment />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Routes>
       </div>
     </div>

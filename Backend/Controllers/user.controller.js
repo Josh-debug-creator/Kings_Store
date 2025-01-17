@@ -4,12 +4,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import configVariables from '../Config/config.js';
 import https from "https";
+// import transporter from '../config/email.js';
 
 // create jwt
 const createToken = (id) => {
   return jwt.sign(id,configVariables.JWT_SECRET)
 }
+
 //  register a user
+// @desc     Register user
+// @method   POST
+// @endpoint /api/users
+// @access   Public
 const registerUser = async (req, res) => {
   try {
     const { name, email, phoneNumber, password } = req.body;
@@ -49,6 +55,11 @@ const userDetails = {
 };
 
 // login user
+// @desc     Auth user & get token
+// @method   POST
+// @endpoint /api/users/login
+// @access   Public
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -72,6 +83,7 @@ const loginUser = async (req, res) => {
     throw new Error(err);
   }
 };
+
 //  admin login
 const adminLogin = async (req, res) => {
   try {
@@ -94,31 +106,57 @@ const adminLogin = async (req, res) => {
   }
 };
 
+// @desc     Logout user / clear cookie
+// @method   POST
+// @endpoint /api/user/logout
+// @access   Private
+const logoutUser = (req, res) => {
+  res.clearCookie('jwt', { httpOnly: true });
 
-// get all users
+  res.status(200).json({ message: 'Logout successful' });
+};
+
+// @desc     Get users
+// @method   GET
+// @endpoint /api/users
+// @access   Private/Admin
 const getAllUsers = async (req, res) => {
   try {
     const allUsers = await userInstance.findAllUsers();
-    res.status(200).json(allUsers);
+    if (!allUsers || allUsers.length === 0) {
+      res.status(404).json("No users found!");
+    }
+     res.status(200).json(allUsers);
   } catch (err) {
     throw new Error(err);
   }
 };
 
-// get one user - login
-// const getOneUser = async (req, res) => {
-//   try {
-//     const userId = req.params;
-//     const user = await userInstance.findUserById(userId);
-//     res.status(200).json(user);
-//   } catch (err) {
-//     throw new Error(err);
-//   }
-// };
+// @desc     Get user
+// @method   GET
+// @endpoint /api/users/:id
+// @access   Private/Admin
+const getOneUser = async (req, res) => {
+  try {
+    const userId = req.params;
+    const user = await userInstance.findUserById(userId)
+   if (!user) {
+     res.status(404).json("No users found!");
+    }
 
-// update user
+    res.status(200).json(user);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+// @desc     Update user
+// @method   PUT
+// @endpoint /api/users/:id
+// @access   Private/Admin
 const updatedUser = async (req, res) => {
-  const userInfo = req.body;
+ try{
+   const userInfo = req.body;
   const userId = req.params;
   const user = await userInstance.findUserById(userId);
   if (!user) {
@@ -126,14 +164,32 @@ const updatedUser = async (req, res) => {
   }
   const updateUser = await userInstance.updateUser(userId, userInfo);
   res.status(200).json(updateUser);
+ }
+
+  catch (error) {
+    res.status(500).json({
+      message: 'Internal Server Error'
+    });
+  }
 };
 
-// delete user
+// @desc     Delete user
+// @method   DELETE
+// @endpoint /api/user/:id
+// @access   Private/Admin
 const deletedUser = async (req, res) => {
   try {
     const userId = req.params;
-    const user = await userInstance.deleteUser(userId);
-    res.status(200).json(user);
+    // find user
+    const user = await userInstance.findUserById(userId)
+
+     if (!user) {
+      res.statusCode = 404;
+      throw new Error('User not found!');
+    }
+    
+    await userInstance.deleteUser(userId);
+    res.status(200).json({success:true, message:"User deleted"});
   } catch (err) {
     throw new Error(err);
   }
@@ -188,13 +244,83 @@ const initializePayment = {
   },
 };
 
+// @desc     Send reset password email
+// @method   POST
+// @endpoint /api/users/reset-password/request
+// @access   Public
+const resetPasswordRequest = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await userInstance.findUserByEmail({ email });
+
+    if (!user) {
+      res.statusCode = 404;
+      throw new Error('User not found!');
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '15m'
+    });
+    const passwordResetLink = ` "http://localhost:3000/api/user/reset-password/${user._id}/${token}`;
+    console.log(passwordResetLink);
+    await transporter.sendMail({
+      from: "Kings Store", // sender address
+      to: user.email, // list of receivers
+      subject: 'Password Reset', // Subject line
+      html: `<p>Hi ${user.name},</p>
+
+            <p>We received a password reset request for your account. Click the link below to set a new password:</p>
+
+            <p><a href=${passwordResetLink} target="_blank">${passwordResetLink}</a></p>
+
+            <p>If you didn't request this, you can ignore this email.</p>
+
+            <p>Thanks,<br>
+            Kings Store Team</p>` // html body
+    });
+
+    res
+      .status(200)
+      .json({success:true, message: 'Password reset email sent, please check your email.' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc     Reset password
+// @method   POST
+// @endpoint /api/user/reset-password/reset/:id/:token
+// @access   Private
+const resetPassword = async (req, res, next) => {
+  try {
+    const { password } = req.body;
+    const { id: userId, token } = req.params;
+    const user = await userInstance.findUserById(userId);
+    const decodedToken = jwt.verify(token, configVariables.JWT_SECRET);
+
+    if (!decodedToken) {
+      res.statusCode = 401;
+      throw new Error('Invalid or expired token');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password successfully reset' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export  {
   registerUser,
   loginUser,
   adminLogin,
 initializePayment,
   getAllUsers,
-
+resetPasswordRequest
   updatedUser,
   deletedUser,
+  resetPassword
 };

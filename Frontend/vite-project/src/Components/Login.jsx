@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate, useLocation, NavLink} from "react-router-dom";
+import { toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State for error messages
+    const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
 
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const redirect = searchParams.get('redirect') || '/';
+    const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+ const navigate = useNavigate();
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -36,16 +49,21 @@ const Login = ({ setToken }) => {
         setError("Login failed. No token returned.");
         console.error("No token in response:", response.data);
       }
-    } catch (err) {
-      console.error("Login error:", err);
+       toast.success('Login successful');
+    } catch (error) {
+      console.error("Login error:", error);
+       toast.error(error?.data?.message || error.error);
 
       // Redirect to signup page if email does not exist
-      if (err.response?.status === 404) {
-        window.location.href = "/register";
-      } else if (err.response?.data?.message) {
-        setError(err.response.data.message);
+      if (error.response?.status === 404) {
+        // window.location.href = "/register";
+         // Redirect to login page
+    navigate("/register");
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");
+        
       }
     }
   };
@@ -58,6 +76,8 @@ const Login = ({ setToken }) => {
       <div className="col-10 col-md-6 col-lg-4 p-4 bg-white rounded shadow">
         <h1 className="text-center mb-4">User Login</h1>
         <form onSubmit={onSubmitHandler}>
+
+          {/* email */}
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email Address
@@ -72,7 +92,35 @@ const Login = ({ setToken }) => {
               value={email}
             />
           </div>
-          <div className="mb-3">
+
+ {/* password */}
+ <div className="d-flex justify-content-between align-items-center">
+            <div>
+             <label htmlFor="password" className="form-label">
+            Password
+            </label>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              required
+              placeholder="Enter your password"
+              className="w-100 px-3 py-2 mb-2 text-bg-light form-control"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
+          </div>
+            <div
+              onClick={togglePasswordVisibility}
+              id='togglePasswordVisibility'
+              style={{ cursor: 'pointer' }}
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
+               
+            {/* </InputGroup.Text> */}
+            </div>
+          {/* </InputGroup> */}
+          </div>
+
+          {/* <div className="mb-3">
             <label htmlFor="password" className="form-label">
               Password
             </label>
@@ -85,7 +133,7 @@ const Login = ({ setToken }) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
-          </div>
+          </div> */}
 
           {/* Error Message Display */}
           {error && <p className="text-danger text-center">{error}</p>}
@@ -93,6 +141,12 @@ const Login = ({ setToken }) => {
           <button type="submit" className="btn btn-warning w-100 py-2">
             Login
           </button>
+
+          <div className='text-end'>
+            <NavLink to={'/reset-password'} className=' col mx-2'>
+              Forgot password?
+            </NavLink>
+          </div >
         </form>
       </div>
     </div>

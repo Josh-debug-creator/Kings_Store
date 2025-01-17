@@ -7,7 +7,7 @@ const CartComponent = ({name, quantity, price, id}) => {
        const { addToCart, deleteFromCart, cart } = useContext(CartContext);
   return (
 <div
-                  className="  cart-item d-flex align-items-center justify-content-between"
+                  className="  cart-item d-flex align-items-center justify-content-between mb-5"
                   key={id}
                 >
                   {/* product details */}

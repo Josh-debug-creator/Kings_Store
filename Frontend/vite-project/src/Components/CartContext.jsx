@@ -51,10 +51,15 @@ const removeFromCart = (id) => {
 
 
 // delete item
-// map through the array and if the id is the same, check if the quantity is greater than 0
-  const deleteFromCart = (id) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
-  };
+
+ const deleteFromCart = (id) => {
+  console.log("Deleting product with id:", id);
+  setCart((prevCart) => {
+    const updatedCart = prevCart.filter((item) => item.id !== id);
+    console.log("Updated Cart:", updatedCart);
+    return updatedCart;
+  });
+};
 
 
   return (

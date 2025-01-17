@@ -182,7 +182,7 @@ const orderTotal = cart.reduce((total, item) => total + item.price * item.quanti
                     id={product._id}
                     // quantity={product.quantity}
                     addToCart={() => addToCart(product)}
-                    deleteFromCart={() => removeFromCart(product._id)}
+                    removeFromCart={() => removeFromCart(product._id)}
                   />
                 </div>
               ))
@@ -216,8 +216,9 @@ const orderTotal = cart.reduce((total, item) => total + item.price * item.quanti
                   quantity={product.quantity}
                   price={product.price.toFixed(2)}
                   id={product._id}
+                  deleteFromCart={() => deleteFromCart(product.id)}
                 />
-                // console.log(cart)
+                // console.log(product.id)
                 )
               })}
 
