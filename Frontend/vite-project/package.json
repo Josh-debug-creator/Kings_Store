@@ -2,7 +2,7 @@
   "name": "vite-project",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://Josh-debug-creator.github.io/Kings_Store/",
+  "homepage": "https://Josh-debug-creator.github.io/Kings_Store/admin",
   "type": "module",
   "proxy": "http://localhost:3000",
   "scripts": {
@@ -10,7 +10,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d build -b gh-pages-admin"
   },
   "dependencies": {
     "axios": "^1.7.8",
