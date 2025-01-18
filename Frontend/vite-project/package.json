@@ -2,14 +2,14 @@
   "name": "vite-project",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://github.com/Josh-debug-creator/Kings_Store/",
+  "homepage": "https://Josh-debug-creator.github.io/Kings_Store/",
   "type": "module",
   "proxy": "http://localhost:3000",
   "scripts": {
     "dev": "vite",
-    "lint": "eslint .",
+    "build": "vite build",
     "preview": "vite preview",
-    "predeploy": "vite build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
