@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import configVariables from "../Config/config.js";
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     console.log(authHeader)

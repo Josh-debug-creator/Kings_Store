@@ -2,7 +2,7 @@
 import express from 'express'
 const router = express.Router();
 import {createProduct, findAllProducts, findOneProduct,updateProduct,deleteProduct} from  '../Controllers/product.controller.js'
-import adminAuth from '../Middleware/adminAuth.js'
+import adminAuth from '../Middleware/authMiddleware.js'
 import upload from '../Middleware/multer.js';
 
 router.post(

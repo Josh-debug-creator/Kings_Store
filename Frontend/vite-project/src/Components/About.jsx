@@ -16,7 +16,7 @@ function About() {
         </div>
         <div className="col-lg-6">
           <img
-            src="../../public/Images/3D young woman sitting with a laptop and waving her hand Illustration.png"
+            src="/Images/3D young woman sitting with a laptop and waving her hand Illustration.png"
             className=""
             alt="image"
           ></img>

@@ -2,7 +2,7 @@
 import express from 'express'
 const router = express.Router();
 import {createNewCategory,findAllCategories, findOneCategory, updateOneCategory, deleteOneCategory} from '../Controllers/category.controller.js'
-import adminAuth from '../Middleware/adminAuth.js';
+import adminAuth from '../Middleware/authMiddleware.js';
 
 
 router.post("/create",adminAuth, createNewCategory);

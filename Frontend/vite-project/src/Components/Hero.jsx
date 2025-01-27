@@ -27,7 +27,7 @@ function Hero() {
         <div className="d-flex row align-items-center justify-content-between text-center">
           <div className="col-lg-6 pb-2 m-auto text-center">
             <img
-              src="../public/Images/3D young man with phone using laptop Illustration.png"
+              src="/Images/3D young man with phone using laptop Illustration.png"
               alt="image"
               className=""
             ></img>

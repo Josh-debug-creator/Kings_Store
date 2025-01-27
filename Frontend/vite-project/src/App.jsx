@@ -8,7 +8,9 @@ import LoginPage from "./Pages/Login";
 import Order from './Components/Order'
 import SignUpPage from "./Pages/SignUp";
 import PaystackPayment from "./Components/Payment";
-import ResetPasswordPage from './Components/ResetPassword'
+import ResetPasswordPage from './Pages/ResetPassword'
+import ResetPasswordRequestPage from "./Pages/ResetPasswordRequest";
+import ShippingPage from './Pages/Shipping'
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/order" element={<Order />} />
           <Route path="/payment" element={<PaystackPayment />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/reset-password-request" element={<ResetPasswordRequestPage />} />
         </Routes>
       </div>
     </div>

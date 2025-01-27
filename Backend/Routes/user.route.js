@@ -10,11 +10,11 @@ import {
   updatedUser,
   deletedUser,
   initializePayment,
-  resetPassword
+  resetPassword,
   resetPasswordRequest
 } from "../Controllers/user.controller.js";
 
-import adminAuth from "../Middleware/adminAuth.js";
+import adminAuth from "../Middleware/authMiddleware.js";
 const validator = {
   checkLogin: [
     body('email').trim().notEmpty().withMessage('Email is Required').bail().isEmail().withMessage("Please enter a valid email address"),

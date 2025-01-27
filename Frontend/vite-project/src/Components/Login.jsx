@@ -8,15 +8,20 @@ const Login = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State for error messages
-    const [showPassword, setShowPassword] = useState(false);
-  const [remember, setRemember] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  // const [remember, setRemember] = useState(false);
+  // const [showConfirmPassword, setConfirmShowPassword] = useState(false);
 
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const redirect = searchParams.get('redirect') || '/';
+
     const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+      setShowPassword(!showPassword);
+    };
+    // const toggleConfirmPasswordVisibility = () => {
+    //   setConfirmShowPassword(!showConfirmPassword);
+    // };
 
  const navigate = useNavigate();
   const onSubmitHandler = async (e) => {
@@ -76,7 +81,6 @@ const Login = ({ setToken }) => {
       <div className="col-10 col-md-6 col-lg-4 p-4 bg-white rounded shadow">
         <h1 className="text-center mb-4">User Login</h1>
         <form onSubmit={onSubmitHandler}>
-
           {/* email */}
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -93,47 +97,29 @@ const Login = ({ setToken }) => {
             />
           </div>
 
- {/* password */}
- <div className="d-flex justify-content-between align-items-center">
+          {/* password */}
+          <div className="d-flex justify-content-between align-items-center">
             <div>
-             <label htmlFor="password" className="form-label">
-            Password
-            </label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              required
-              placeholder="Enter your password"
-              className="w-100 px-3 py-2 mb-2 text-bg-light form-control"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </div>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                placeholder="Enter your password"
+                className="w-100 px-3 py-2 mb-2 text-bg-light form-control"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+            </div>
             <div
               onClick={togglePasswordVisibility}
-              id='togglePasswordVisibility'
-              style={{ cursor: 'pointer' }}
+              id="togglePasswordVisibility"
+              style={{ cursor: "pointer" }}
             >
               {showPassword ? <FaEye /> : <FaEyeSlash />}
-               
-            {/* </InputGroup.Text> */}
             </div>
-          {/* </InputGroup> */}
           </div>
-
-          {/* <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              placeholder="Enter your password"
-              className="form-control"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </div> */}
 
           {/* Error Message Display */}
           {error && <p className="text-danger text-center">{error}</p>}
@@ -142,11 +128,11 @@ const Login = ({ setToken }) => {
             Login
           </button>
 
-          <div className='text-end'>
-            <NavLink to={'/reset-password'} className=' col mx-2'>
+          <div className="text-end">
+            <NavLink to={"/reset-password"} className=" col mx-2">
               Forgot password?
             </NavLink>
-          </div >
+          </div>
         </form>
       </div>
     </div>

@@ -319,7 +319,7 @@ export  {
   adminLogin,
 initializePayment,
   getAllUsers,
-resetPasswordRequest
+resetPasswordRequest,
   updatedUser,
   deletedUser,
   resetPassword

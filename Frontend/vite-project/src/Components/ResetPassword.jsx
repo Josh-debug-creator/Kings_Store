@@ -8,7 +8,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 // import Message from '../components/Message';
 
-const ResetPasswordPage = () => {
+const ResetPassword = () => {
   const { id: userId, token } = useParams();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -100,4 +100,4 @@ const ResetPasswordPage = () => {
   );
 };
 
-export default ResetPasswordPage;
+export default ResetPassword;
