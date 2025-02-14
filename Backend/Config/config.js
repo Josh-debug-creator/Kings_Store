@@ -12,7 +12,8 @@ const configVariables = {
   ADMIN_PASSWORD:process.env.ADMIN_PASSWORD,
   PAYSTACK_SECRET_KEY:process.env.PAYSTACK_SECRET_KEY,
   EMAIL_PASS:process.env.EMAIL_PASS,
-  EMAIL_USER:process.env.EMAIL_USER
+  EMAIL_USER:process.env.EMAIL_USER,
+  PAYSTACK_PUBLIC_KEY: process.env.PAYSTACK_PUBLIC_KEY
 };
 
 export default configVariables;

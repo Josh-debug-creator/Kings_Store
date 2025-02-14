@@ -1,26 +1,29 @@
 import "./NavBar/NavBar.css";
+import teammember1 from '../assets/teammember1.jpg'
 
 const TeamMembers = [
   {
     id: "1",
     name: "Nebe Kingsley",
     image:
-      "../../public/Images/2347063833046_status_cc85ad0f89d44149b51bbf16b8409b2c.jpg",
+     {teammember1},
     role: "General Manager",
   },
   {
     id: "2",
     name: "Nebe Kingsley",
-    image:
-      "../../public/Images/2347063833046_status_cc85ad0f89d44149b51bbf16b8409b2c.jpg",
-    role: "General Manager",
+   
+      image:
+     {teammember1},
+    role: "Logistics Manager",
   },
   {
     id: "3",
     name: "Nebe Kingsley",
-    image:
-      "../../public/Images/2347063833046_status_cc85ad0f89d44149b51bbf16b8409b2c.jpg",
-    role: "General Manager",
+   
+      image:
+     {teammember1},
+    role: "Sales Manager",
   },
 ];
 

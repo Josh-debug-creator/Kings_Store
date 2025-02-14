@@ -5,31 +5,32 @@ import ProductComponent from "./ProductComponent.jsx";
 import { CartContext } from "../CartContext.jsx";
 import CartComponent from "../Cart/CartComponent.jsx";
 import { Link, NavLink } from "react-router-dom";
+import productimg1 from '../../assets/productimg1.jpeg'
 
 const products = [
   {
-image:  "../public/Images/3D delivery boy on scooter illustration.jpeg", 
+image:  productimg1, 
     _id: "11",
     name: "Waffle with Berries",
     category: "Waffle",
     price: 6.5,
   },
   {
-  image:  "../public/Images/3D delivery boy on scooter illustration.jpeg",
+  image:  productimg1,
     _id: "12",
     name: "Vanilla Bean Crème ",
     category: "Crème Brûlée",
     price: 7.0,
   },
   {
-     image:  "../public/Images/3D delivery boy on scooter illustration.jpeg",
+     image:  productimg1,
     _id: "13",
     name: "Macaron Mix of Five",
     category: "Macaron",
     price: 8.0,
   },
   {
-    image:  "../public/Images/3D delivery boy on scooter illustration.jpeg",
+    image:  productimg1,
      _id: "14",
     name: "Classic Tiramisu",
     category: "Tiramisu",

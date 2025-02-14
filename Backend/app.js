@@ -1,9 +1,9 @@
-// const express = require("express");
+
 import express from 'express'
-// const mongoDbConnection = require("./Config/db.config");
+
 import mongoDbConnection from './Config/db.config.js'
 const app = express();
-// const routeHandler = require("./Routes");
+
 import cors from 'cors'
 import bodyParser from 'body-parser';
 import routeHandler from './Routes/index.js'

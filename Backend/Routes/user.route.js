@@ -6,15 +6,17 @@ import {
   loginUser,
   adminLogin,
   getAllUsers,
-  // getOneUser,
+  getOneUser,
   updatedUser,
   deletedUser,
+  logoutUser,
   initializePayment,
   resetPassword,
-  resetPasswordRequest
+  resetPasswordRequest,
 } from "../Controllers/user.controller.js";
 
-import adminAuth from "../Middleware/authMiddleware.js";
+import { body, param } from "express-validator";
+import authMiddleware from "../Middleware/authMiddleware.js";
 const validator = {
   checkLogin: [
     body('email').trim().notEmpty().withMessage('Email is Required').bail().isEmail().withMessage("Please enter a valid email address"),
@@ -48,9 +50,9 @@ const validator = {
 
 router.post("/register", registerUser);
 
-router.post("/login",validator.checkLogin, loginUser);
+router.post("/login", validator.checkLogin, loginUser);
 
-router.post('/logout', protect, logoutUser);
+router.post("/logout", authMiddleware, logoutUser);
 
 router.post("/payment", initializePayment);
 
@@ -58,11 +60,13 @@ router.post("/payment", initializePayment);
 router.post("/admin", adminLogin);
 
 // admin only - verify if admin first
-router.get("/users", getAllUsers);
+router.get("/", getAllUsers);
+
+router.get("/:id", getOneUser);
 
 router.post("/reset-password/request",validator.resetPasswordRequest, resetPasswordRequest);
 
-router.post("reset-password/reset/:id/:token",validator.resetPassword, resetPassword);
+router.post("/reset-password/reset/:id/:token",validator.resetPassword, resetPassword);
 
 // admin only - verify if admin first
 router.put("/:id",validator.checkUpdateUser, updatedUser);

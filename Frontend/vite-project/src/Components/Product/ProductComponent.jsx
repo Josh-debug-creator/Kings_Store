@@ -1,6 +1,7 @@
 import "./ProductComponent.css"
 import React, { useEffect, useState, useContext } from "react";
 import { CartContext } from "../CartContext.jsx";
+import iconaddtocart from '../../assets/icon-add-to-cart.svg'
 
 function ProductComponent({
   image,
@@ -18,7 +19,7 @@ function ProductComponent({
       <div className="Add-to-cart btn-group w-auto">
         <div className="cart-btn py-2 m-auto w-100 my-2">
           <img
-            src="../public/Images/icon-add-to-cart.svg"
+            src={iconaddtocart}
             alt="icon-add-to-cart"
             className="cart-img px-1 w-25"
           ></img>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { CartContext } from "../CartContext.jsx";
 import { Link, NavLink } from "react-router-dom";
+import iconemptycart from '../../assets/illustration-empty-cart.svg'
 
 const Cart = ()=> {
    const { cart } = useContext(CartContext);
@@ -21,7 +22,7 @@ const handleProductQuantity = ()=>{
         {cart.length === 0 ? (
           <>
             <img
-              src="../public/Images/illustration-empty-cart.svg"
+              src={iconemptycart}
               alt="Empty Cart"
               className="w-50"
             ></img>

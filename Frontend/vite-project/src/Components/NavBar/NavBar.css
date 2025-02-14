@@ -42,7 +42,9 @@
     url("../../public/Images/andras-vas-wB9WormrY1o-unsplash.jpg");
   background-position: center;
   background-size: cover;
+  
 }
+
 img {
   width: 100%;
 }
@@ -129,3 +131,37 @@ opacity: 0;
     padding: 10px;
     color: white;
 }
+.about-container{
+padding:  0;
+}
+.about-img{
+  max-height: 400px;
+  padding: 0;
+}
+.about-img img{
+  height: 100%;
+}
+/* .about-container {
+  max-height: 800px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+} */
+
+/* .about-content {
+  overflow-y: auto;
+  max-height: 350px; 
+} */
+
+/* .about-img {
+  max-height: 150px; 
+  width: auto; 
+} */
+
+/* .icon-box img {
+  width: 40px; 
+  height: 40px;
+} */

@@ -9,6 +9,7 @@ function LoginPage() {
         <NavBar />
         <Login />
         <Footer />
+        
       </div>
     </>
   );

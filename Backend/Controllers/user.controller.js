@@ -4,11 +4,12 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import configVariables from '../Config/config.js';
 import https from "https";
-// import transporter from '../config/email.js';
+import transporter from '../Middleware/email.js'
+import mongoose from "mongoose";
 
 // create jwt
 const createToken = (id) => {
-  return jwt.sign(id,configVariables.JWT_SECRET)
+  return jwt.sign({id},configVariables.JWT_SECRET)
 }
 
 //  register a user
@@ -22,12 +23,12 @@ const registerUser = async (req, res) => {
     // check if user exists
     const userExists = await userInstance.findUserByEmail({email} );
     if (userExists) {
-      res.status(400).json("user already exists");
-      console.log(userExists);
+      return res.status(400).json("user already exists");
+   
     }
     // validate email
     if(!validator.isEmail(email)){
-      res.status(400).json("Please, enter a valid email")
+      return res.status(400).json("Please, enter a valid email")
     }
     // check length of password
     // if(password.value.length < 6){
@@ -46,10 +47,10 @@ const userDetails = {
 
     // sign jwt
     const token = await jwt.sign({id: userInfo._id}, configVariables.JWT_SECRET);
-    res.status(201).json({success:true,token});
+    return res.status(201).json({success:true,message:token});
   } catch (err) {
-     res.json({success:false,message:message.err});
-    throw new Error(err.message);
+     return res.json({success:false,message:err});
+    // throw new Error(err.message);
    
   }
 };
@@ -65,22 +66,29 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
     // check if user exists
     const findUser = await userInstance.findUserByEmail( {email} );
+   
+    
     // if user doesn't exist, return
     if(!findUser){
-      res.status(404).json({success: false, message:"user does not exist"})
+      return res.status(404).json({success: false, message:"user does not exist"})
+  
     }
     // compare password
-    const isMatch = bcrypt.compare(password, findUser.password);
+    const isMatch = await bcrypt.compare(password, findUser.password);
    if (isMatch){
     const token = createToken(findUser._id)
-    res.status(200).json({success:true, message:token})
+    // res.status(200).json({success:true, message:token})
+  
    }
    else{
-    res.status(400).json({success:false, message:'Invalid credentials'})
+    return res.status(400).json({success:false, message:'Invalid credentials'})
+   
    }
-    res.status(200).json({success:true, message:"user logged in"});
+    return res.status(200).json({success:true, message:"user logged in"});
+   
   } catch (err) {
-    throw new Error(err);
+     return res.json({ success: false, message: err });
+
   }
 };
 
@@ -96,9 +104,9 @@ const adminLogin = async (req, res) => {
         email + password,
         configVariables.JWT_SECRET
       );
-      res.status(200).json({succss:true, token:token});
+      return res.status(200).json({succss:true, token:token});
     } else {
-      res.status(400).json({success:false, message:"Invalid credentials"});
+      return res.status(400).json({success:false, message:"Invalid credentials"});
     }
   } catch (err) {
     console.log(err)
@@ -113,7 +121,7 @@ const adminLogin = async (req, res) => {
 const logoutUser = (req, res) => {
   res.clearCookie('jwt', { httpOnly: true });
 
-  res.status(200).json({ message: 'Logout successful' });
+  return res.status(200).json({ message: 'Logout successful' });
 };
 
 // @desc     Get users
@@ -126,7 +134,7 @@ const getAllUsers = async (req, res) => {
     if (!allUsers || allUsers.length === 0) {
       res.status(404).json("No users found!");
     }
-     res.status(200).json(allUsers);
+     return res.status(200).json(allUsers);
   } catch (err) {
     throw new Error(err);
   }
@@ -138,13 +146,20 @@ const getAllUsers = async (req, res) => {
 // @access   Private/Admin
 const getOneUser = async (req, res) => {
   try {
-    const userId = req.params;
-    const user = await userInstance.findUserById(userId)
+      const userId = req.params.id;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid User ID" });
+      }
+      const user = await userInstance.findUserById(userId);
+     
+  
    if (!user) {
      res.status(404).json("No users found!");
     }
 
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
     throw new Error(err);
   }
@@ -157,18 +172,21 @@ const getOneUser = async (req, res) => {
 const updatedUser = async (req, res) => {
  try{
    const userInfo = req.body;
-  const userId = req.params;
+  const userId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ success: false, message: "Invalid User ID" });
+  }
   const user = await userInstance.findUserById(userId);
   if (!user) {
-    res.status(404).json("user not found");
+    return res.status(404).json("user not found");
   }
   const updateUser = await userInstance.updateUser(userId, userInfo);
-  res.status(200).json(updateUser);
+  return res.status(200).json(updateUser);
  }
 
   catch (error) {
     res.status(500).json({
-      message: 'Internal Server Error'
+      message: error
     });
   }
 };
@@ -179,17 +197,20 @@ const updatedUser = async (req, res) => {
 // @access   Private/Admin
 const deletedUser = async (req, res) => {
   try {
-    const userId = req.params;
+    const userId = req.params.id;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ success: false, message: "Invalid User ID" })
+      }
     // find user
     const user = await userInstance.findUserById(userId)
 
      if (!user) {
-      res.statusCode = 404;
-      throw new Error('User not found!');
+      return res.status(404).json("User not found")
+    
     }
     
     await userInstance.deleteUser(userId);
-    res.status(200).json({success:true, message:"User deleted"});
+    return res.status(200).json({success:true, message:"User deleted"});
   } catch (err) {
     throw new Error(err);
   }
@@ -228,6 +249,7 @@ const initializePayment = {
           });
           apiRes.on("end", () => {
             console.log(JSON.parse(data));
+            // res.send(data)
             return res.status(200).json(data);
           });
         })
@@ -254,8 +276,8 @@ const resetPasswordRequest = async (req, res, next) => {
     const user = await userInstance.findUserByEmail({ email });
 
     if (!user) {
-      res.statusCode = 404;
-      throw new Error('User not found!');
+      return res.status(404).json({success:false, message:"user not found!"})
+      // throw new Error('User not found!');
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -279,7 +301,7 @@ const resetPasswordRequest = async (req, res, next) => {
             Kings Store Team</p>` // html body
     });
 
-    res
+    return res
       .status(200)
       .json({success:true, message: 'Password reset email sent, please check your email.' });
   } catch (error) {
@@ -291,36 +313,38 @@ const resetPasswordRequest = async (req, res, next) => {
 // @method   POST
 // @endpoint /api/user/reset-password/reset/:id/:token
 // @access   Private
-const resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res) => {
   try {
     const { password } = req.body;
     const { id: userId, token } = req.params;
     const user = await userInstance.findUserById(userId);
-    const decodedToken = jwt.verify(token, configVariables.JWT_SECRET);
+    const decodedToken = await jwt.verify(token, configVariables.JWT_SECRET);
 
     if (!decodedToken) {
-      res.statusCode = 401;
-      throw new Error('Invalid or expired token');
+      res.status(401).json("Invalid token")
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     user.password = hashedPassword;
     await user.save();
 
-    res.status(200).json({ message: 'Password successfully reset' });
+    return res.status(200).json({ success: true,message: 'Password successfully reset' });
   } catch (error) {
-    next(error);
+    throw new Error(error);
+  
   }
 };
 
-export  {
+export {
   registerUser,
   loginUser,
   adminLogin,
-initializePayment,
+  initializePayment,
   getAllUsers,
-resetPasswordRequest,
+  getOneUser,
+  resetPasswordRequest,
   updatedUser,
   deletedUser,
-  resetPassword
+  logoutUser,
+  resetPassword,
 };

@@ -31,21 +31,3 @@ export default userModel
 
 
 
-// - Reset Password
-// — URL: `/user/api/reset`
-// — Method: POST
-// — Description: Allows users to reset their password.
-// — Request Body:
-// — `email` (string, required): User’s registered email address.
-// — `password` (string, required): New password.
-// — Response:
-// — `message`: Password reset success message.
-
-// - Forgot Password
-// — URL: `/user/api/forgotPassword`
-// — Method: POST
-// — Description: Allows users to request a password reset link via email.
-// — Request Body:
-// — `email` (string, required): User’s registered email address.
-// — Response:
-// — `message`: Password reset link sent successfully message.

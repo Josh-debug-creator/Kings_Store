@@ -1,132 +1,108 @@
-import React, { useState } from "react";
-import axios from "axios";
-// import { usePaystackPayment } from "react-paystack";
+import React, { useState } from "react"
 import { PaystackButton } from "react-paystack"
 import "./Payment.css"
+import PaystackPop from '@paystack/inline-js'
 
-
-const PaystackPayment = () => {
-  const [amount, setAmount] = useState(0);
-    const [email, setEmail] = useState("")
+const Payment = () => {
+  const publicKey = "pk_test_24e2a22c4d14766433b8e933eda71e1d3f197138"
+  const amount = 1000000
+  const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
 
-  const publicKey = "YOUR_PAYSTACK_PUBLIC_KEY"; // Replace with your Paystack public key
-
-  // const initializePayment = usePaystackPayment({
-  //   reference: new Date().getTime().toString(),
+  // const componentProps = {
   //   email,
-  //   amount: amount * 100, // Convert to kobo
+  //   amount,
+  //   metadata: {
+  //     name,
+  //     phone,
+  //   },
   //   publicKey,
-  // });
-
-  // const handlePayment = () => {
-  //   initializePayment(
-  //     (response) => {
-  //       // Success Callback
-  //       console.log("Payment Successful", response);
-  //       verifyPayment(response.reference);
-  //     },
-  //     (error) => {
-  //       // Error Callback
-  //       console.error("Payment Error", error);
-  //     }
-  //   );
+  //   text: "Pay Now",
+  //   onSuccess: () =>
+  //     alert("Thanks for doing business with us! Come back soon!!"),
+  //   onClose: () => alert("Wait! Don't leave :(")
   // };
-
-  // const verifyPayment = async (reference) => {
-  //   try {
-  //     const response = await axios.get(`/api/paystack/verify/${reference}`);
-  //     if (response.data.success) {
-  //       alert("Payment Verified Successfully!");
-  //     } else {
-  //       alert("Payment Verification Failed!");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error Verifying Payment:", error.message);
-  //   }
-  // };
-
-  const componentProps = {
+const payWithPaystack = (e) => {
+  e.preventDefault()
+  const paystack = new PaystackPop ()
+  paystack.newTransaction({
+    key: publicKey,
+    amount:amount,
     email,
-    amount,
-    metadata: {
-      name,
-      phone,
-    },
-    publicKey,
-    text: "Pay Now",
-    onSuccess: () =>
-      alert("Thanks for doing business with us! Come back soon!!"),
-    onClose: () => alert("Wait! Don't leave :("),
-  }
+    name,
+    phone
+  });
+  
+}
 
   return (
-    // <div>
-    //   <h1>Payment Page</h1>
-    //   <div>
-    //     <div>Payment</div>
-    //     <div>Card Details</div>
-    //   </div>
-    // </div>
-    // <div>
-    //   <h1>Make Payment</h1>
-    //   <input
-    //     type="email"
-    //     placeholder="Enter your email"
-    //     value={email}
-    //     onChange={(e) => setEmail(e.target.value)}
-    //   />
-    //   <input
-    //     type="number"
-    //     placeholder="Enter amount"
-    //     value={amount}
-    //     onChange={(e) => setAmount(e.target.value)}
-    //   />
-    //   <button onClick={handlePayment}>Pay Now</button>
-    // </div>
-      <div className="payment_App">
-      <div className="container">
-        <div className="item">
-          <img />
-          <div className="item-details">
+    <div
+      className="d-flex align-items-center justify-content-center"
+      style={{ height: "100vh", backgroundColor: "#f8f9fa" }}
+    >
+      <div className="container col-10 col-md-6 col-lg-4 p-4 bg-white rounded shadow">
+        {/* order details */}
+
+        {/* <div className="item"> */}
+        <h3 className="text-center mb-4">Make Payment</h3>
+        {/* <img /> */}
+        {/* order details */}
+        {/* <div className="item-details">
             <p>Dancing Shoes</p>
             <p>{amount}</p>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
         <div className="checkout-form">
-          <form>
-            <label>Name</label>
-            <input
-              type="text"
-              id="name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label>Email</label>
-            <input
-              type="text"
-              id="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label>Phone</label>
-            <input
-              type="text"
-              id="phone"
-              onChange={(e) => setPhone(e.target.value)}
-            />
+          <form onSubmit={payWithPaystack}>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                className="form-control"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                className="form-control"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone"
+                onChange={(e) => setPhone(e.target.value)}
+                value={phone}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="amount">Amount</label>
+              <input
+                type="text"
+                className="form-control"
+                id="amount"
+                // value={amount}
+              />
+            </div>
+            <div className="form-submit w-100">
+              {/* <PaystackButton {...componentProps} /> */}
+              <button className="btn submit-btn">Submit</button>
+            </div>
           </form>
-          <PaystackButton {...componentProps} />
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default PaystackPayment;
-
-
-
-
-
-
-
+export default Payment;

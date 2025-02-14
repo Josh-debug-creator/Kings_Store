@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   base: "/Kings_Store/user", // Add this to match your repository name
   build: {
-    outDir: "build", // Ensure the output directory is set to "build"
+    outDir: "dist", 
   },
   server: {
     proxy: {

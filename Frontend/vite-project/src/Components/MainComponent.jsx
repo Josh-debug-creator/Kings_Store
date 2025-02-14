@@ -11,7 +11,7 @@ function MainComponent() {
   return (
     <>
       {/* HERO SECTION */}
-      <section id="hero" className="min-vh-100 d-flex align-items-center mb-3">
+      <section id="hero" className=" d-flex align-items-center mb-3 pt-5">
         <div className="container">
           <Hero />
         </div>

@@ -1,24 +1,26 @@
 import "../Components/NavBar/NavBar.css"
+import serviceimg1 from '../assets/serviceimg1.jpg'
+import serviceimg2 from '../assets/serviceimg2.jpg'
 
 const serviceImages = [
   {
     id: "1",
-    image: "../../public/Images/istockphoto-1308145590-612x612.jpg",
-    service: "GADGETS SALES",
+    image: {serviceimg1},
+    service: "SALES",
     description:
       "We deliver all brands and models of phones ranging from iphones, oppo, sansung, tecno, etc",
   },
   {
     id: "2",
-    image: "../../public/Images/istockphoto-1308145590-612x612.jpg",
-    service: "GADGETS SWAP",
+    image: {serviceimg2},
+    service: "SWAP",
     description:
       "We swap all brands and models of phones ranging from iphones, oppo, sansung, tecno, etc",
   },
   {
     id: "3",
     image: "../../public/Images/istockphoto-1308145590-612x612.jpg",
-    service: "GADGETS REPAIR",
+    service: "REPAIR",
     description:
       "We repair all brands and models of phones ranging from iphones, oppo, sansung, tecno, etc",
   },
@@ -80,7 +82,7 @@ function Services () {
                description={service.description}
                service={service.service}
              />
-           );
+           )
          })}
        </div>
      </div>
